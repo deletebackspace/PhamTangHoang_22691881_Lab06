@@ -3,11 +3,11 @@
     {
       "id": "1",
       "avatar": "./Avatar 313.png",
-      "name": "Phạm Tăng Hoàng",
+      "name": "Nguyễn Văn B",
       "company": "SmoozeShift",
       "odervalue": "$539",
       "orderdate": "10/07/2023",
-      "status": "Completed",
+      "status": "New",
       "image": "./Pie chart.png"
     },
     {
@@ -49,6 +49,15 @@
       "orderdate": "16/12/2020",
       "status": "Completed",
       "image": "./Pie chart.png"
+    },
+    {
+      "id": 1745079956708,
+      "avatar": "",
+      "name": "Phạm Tăng Hoàng",
+      "company": "hoang",
+      "odervalue": "$539",
+      "orderdate": "10/07/2023",
+      "status": "Completed"
     }
   ]
 }

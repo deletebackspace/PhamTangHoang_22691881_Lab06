@@ -5,9 +5,6 @@ import Content from "./component/Content"
 import { BrowserRouter } from "react-router-dom";
 import Footer from "./component/Footer";
 
-
-
-
 function App() {
 
   return (

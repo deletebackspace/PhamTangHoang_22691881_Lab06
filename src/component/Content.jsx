@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import Modal from "../modal/Modal";
 import DataTable from "react-data-table-component";
 
 const Content = () => {
+  const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [dataTB, setDataTB] = useState([]);
   const [datax, setDatax] = useState([]);
@@ -25,6 +27,16 @@ const Content = () => {
   const handleEdit = (row) => {
     setSelectedUser(row);
     setShowModal(true);
+  };
+
+  const openModal = () => {
+    setSelectedUser(null);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedUser(null);
   };
 
   const handleUpdateUser = async (updatedUser) => {
@@ -155,6 +167,7 @@ const Content = () => {
         <div className="col-span-10 text-end">
           <button
             className="rounded border-1 border-pink-400 p-1 text-pink-400"
+            onClick={openModal}
           >
             Add User
           </button>
@@ -169,6 +182,16 @@ const Content = () => {
         fixedHeader
         customStyles={customStyles}
       />
+
+      {/* Modal */}
+      {showModal && (
+        <Modal
+          user={selectedUser}
+          onClose={closeModal}
+          onUpdate={handleUpdateUser}
+          isNew={!selectedUser}
+        />
+      )}
     </div>
   );
 };
