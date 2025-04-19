@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-
+import DataTable from "react-data-table-component";
 
 const Content = () => {
-
   const [selectedUser, setSelectedUser] = useState(null);
+  const [dataTB, setDataTB] = useState([]);
   const [datax, setDatax] = useState([]);
 
   // Fetch dữ liệu từ JSON Server
@@ -14,14 +14,17 @@ const Content = () => {
       .catch((err) => console.error("Fetch error:", err));
   }, []);
 
-  const openModal = () => {
-    setSelectedUser(null);
-    setShowModal(true);
-  };
+  useEffect(() => {
+    fetch("http://localhost:1881/dataTable")
+      .then((res) => res.json())
+      .then((data) => setDataTB(data))
+      .catch((err) => console.error("Fetch error:", err));
+  }, []);
 
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedUser(null);
+  console.log("Data from JSON Server:", dataTB);
+  const handleEdit = (row) => {
+    setSelectedUser(row);
+    setShowModal(true);
   };
 
   const handleUpdateUser = async (updatedUser) => {
@@ -51,6 +54,68 @@ const Content = () => {
     closeModal();
   };
 
+  const columns = [
+    {
+      name: "CUSTOMER NAME",
+      cell: (row) => (
+        <>
+          <img src={row.avatar} alt={row.name} style={{ width: 32, marginRight: 8 }} />
+          {row.name}
+        </>
+      ),
+    },
+    { name: "COMPANY", selector: (row) => row.company },
+    { name: "ORDER VALUE", selector: (row) => row.odervalue },
+    { name: "ORDER DATE", selector: (row) => row.orderdate },
+    {
+      name: "STATUS",
+      cell: (row) => {
+        let color = "";
+        switch (row.status.toLowerCase().trim()) {
+          case "new":
+            color = "#3399ff";
+            break;
+          case "in-progress":
+            color = "#ffcc00";
+            break;
+          case "completed":
+            color = "#00cc66";
+            break;
+          default:
+            color = "#000";
+        }
+        return <span style={{ color, fontWeight: "500" }}>{row.status}</span>;
+      },
+    },
+    {
+      name: "UPDATE",
+      cell: (row) => (
+        <img
+          src={row.image}
+          alt="Edit"
+          style={{ width: "24px", cursor: "pointer" }}
+          onClick={() => handleEdit(row)}
+        />
+      ),
+    },
+  ];
+
+  const customStyles = {
+    headRow: {
+      style: {
+        backgroundColor: "#eaf3fe",
+        color: "#000",
+        fontWeight: "bold",
+        borderBottom: "1px solid #ccc",
+      },
+    },
+    headCells: {
+      style: { justifyContent: "center" },
+    },
+    cells: {
+      style: { justifyContent: "center" },
+    },
+  };
 
   return (
     <div className="w-full p-5">
@@ -90,12 +155,20 @@ const Content = () => {
         <div className="col-span-10 text-end">
           <button
             className="rounded border-1 border-pink-400 p-1 text-pink-400"
-            onClick={openModal}
           >
             Add User
           </button>
         </div>
       </div>
+      {/* Data Table */}
+      <DataTable
+        columns={columns}
+        data={dataTB}
+        selectableRows
+        pagination
+        fixedHeader
+        customStyles={customStyles}
+      />
     </div>
   );
 };
