@@ -1,6 +1,7 @@
 
 import Header from "./component/Header"
 import Siderbar from "./component/Siderbar"
+import Content from "./component/Content"
 import { BrowserRouter } from "react-router-dom";
 import Footer from "./component/Footer";
 
@@ -19,6 +20,7 @@ function App() {
           </div>
           <div className="col-span-10 shadow-lg">
             <Header />
+            <Content />
           </div>
         </div>
         <br />
